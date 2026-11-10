@@ -87,11 +87,26 @@ class Usuario:
 
         tipo = tipo_entrada.lower()
         if tipo == "grada":
-            entrada_nueva = EstradaGrada(concierto, "1A")
+            entrada_nueva = EntradaGrada(concierto, "1A")
         elif tipo == "pista":
-            entrafa_nueva = EntradaPista(concierto, True)
-        elif tipo == "VIP":
+            entrada_nueva = EntradaPista(concierto, True)
+        elif tipo == "vip":
             entrada_nueva = EntradaVIP(concierto, True)
         else: 
             entrada_nueva = Entrada(concierto)
 
+        concierto.entradas_vendidas.append(entrada_nueva)
+        self.entradas_compradas.append(entrada_nueva)
+        self.conciertos_asistidos.add(concierto)
+
+    def valorar(self, concierto, valoracion):
+        if concierto not in self.conciertos_asistidos:
+            raise Exception("Primo, no puedes valorar algo a lo que no has ido.")
+            
+        if valoracion < 0 or valoracion > 10:
+            raise Exception("La nota tiene que estar entre 0 y 10.")
+            
+        self.valoraciones[concierto] = valoracion
+
+    def __str__(self):
+        return f"{self.nombre} (ha asistido a {len(self.conciertos_asistidos)})"
